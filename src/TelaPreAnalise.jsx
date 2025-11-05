@@ -225,13 +225,13 @@ const decidirDestino = ({
 const precisaFoto = (status) =>
   ["RISCADO", "DANIFICADO", "AMASSADO"].includes(status);
 
-const Th = ({ children }) => (
+const CabecalhoTabela = ({ children }) => (
   <th className="px-3 py-2 font-semibold tracking-wide text-left border-b border-blue-200 sticky top-0 z-10 bg-[#d3e3ff] text-slate-800">
     {children}
   </th>
 );
 
-const Td = ({ children, mono = false }) => (
+const CelulaTabela = ({ children, mono = false }) => (
   <td
     className={`px-3 py-2 border-b border-blue-50 ${
       mono ? "font-mono text-slate-800" : "text-slate-700"
@@ -241,7 +241,7 @@ const Td = ({ children, mono = false }) => (
   </td>
 );
 
-const Chip = ({ label, mono = false }) => (
+const SeloInformacao = ({ label, mono = false }) => (
   <span
     className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] ${
       mono ? "font-mono" : ""
@@ -251,7 +251,7 @@ const Chip = ({ label, mono = false }) => (
   </span>
 );
 
-const FotoPreview = ({ preview, onClear, onOpen }) => (
+const PreviaFoto = ({ preview, onClear, onOpen }) => (
   <div className="flex items-center gap-2">
     <button
       type="button"
@@ -269,6 +269,7 @@ const FotoPreview = ({ preview, onClear, onOpen }) => (
     </button>
   </div>
 );
+
 export default function TelaPreAnalise() {
   const USUARIO_ATUAL =
     typeof window !== "undefined"
@@ -361,10 +362,10 @@ export default function TelaPreAnalise() {
   const [erroEmb, setErroEmb] = useState("");
 
   const progresso = (etapaAtual / TOTAL_ETAPAS) * 100;
-  const isMobile =
+  const ehDispositivoMovel =
     typeof navigator !== "undefined" &&
     /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  const captureProp = isMobile ? { capture: "environment" } : {};
+  const propriedadeCaptura = ehDispositivoMovel ? { capture: "environment" } : {};
 
   const iniciarPreAnalise = (row) => {
     if (!row?.habilitado) return;
@@ -720,7 +721,7 @@ export default function TelaPreAnalise() {
     }
   }, []);
 
-  const Stepper = () => (
+  const NavegacaoEtapas = () => (
     <div className="relative">
       <div className="flex items-center justify-between gap-2">
         {STEP_LABELS.map((label, idx) => {
@@ -757,7 +758,7 @@ export default function TelaPreAnalise() {
       </div>
     </div>
   );
-  const renderTableProdutos = (
+  const tabelaProdutos = (
     <div className="bg-white rounded-3xl shadow-xl border border-[#d7e3ff] p-6">
       <h2 className="text-lg font-extrabold uppercase tracking-wide text-slate-800">
         Produtos aguardando pré-análise
@@ -770,14 +771,14 @@ export default function TelaPreAnalise() {
           <table className="min-w-full uppercase text-sm">
             <thead className="bg-[#d3e3ff] text-slate-800">
               <tr>
-                <Th>DATA RECEBIMENTO</Th>
-                <Th>RECEBIDO POR</Th>
-                <Th>ID PRODUTO</Th>
-                <Th>CÓDIGO NF</Th>
-                <Th>MODELO REFERÊNCIA</Th>
-                <Th>GTIN/EAN</Th>
-                <Th>Nº NF RECEB.</Th>
-                <Th>PRÉ-ANÁLISE</Th>
+                <CabecalhoTabela>DATA RECEBIMENTO</CabecalhoTabela>
+                <CabecalhoTabela>RECEBIDO POR</CabecalhoTabela>
+                <CabecalhoTabela>ID PRODUTO</CabecalhoTabela>
+                <CabecalhoTabela>CÓDIGO NF</CabecalhoTabela>
+                <CabecalhoTabela>MODELO REFERÊNCIA</CabecalhoTabela>
+                <CabecalhoTabela>GTIN/EAN</CabecalhoTabela>
+                <CabecalhoTabela>Nº NF RECEB.</CabecalhoTabela>
+                <CabecalhoTabela>PRÉ-ANÁLISE</CabecalhoTabela>
               </tr>
             </thead>
             <tbody>
@@ -795,14 +796,14 @@ export default function TelaPreAnalise() {
                     idx % 2 ? "bg-[#f4f7ff]" : "bg-white"
                   } hover:bg-[#e6efff]`}
                 >
-                  <Td mono>{row.dataReceb}</Td>
-                  <Td>{row.recebidoPor}</Td>
-                  <Td mono>{row.lpn}</Td>
-                  <Td mono>{row.sku}</Td>
-                  <Td>{row.modeloRef}</Td>
-                  <Td mono>{row.ean}</Td>
-                  <Td mono>{row.nf}</Td>
-                  <Td>
+                  <CelulaTabela mono>{row.dataReceb}</CelulaTabela>
+                  <CelulaTabela>{row.recebidoPor}</CelulaTabela>
+                  <CelulaTabela mono>{row.lpn}</CelulaTabela>
+                  <CelulaTabela mono>{row.sku}</CelulaTabela>
+                  <CelulaTabela>{row.modeloRef}</CelulaTabela>
+                  <CelulaTabela mono>{row.ean}</CelulaTabela>
+                  <CelulaTabela mono>{row.nf}</CelulaTabela>
+                  <CelulaTabela>
                     <button
                       type="button"
                       disabled={!row.habilitado}
@@ -815,7 +816,7 @@ export default function TelaPreAnalise() {
                     >
                       EFETUAR
                     </button>
-                  </Td>
+                  </CelulaTabela>
                 </tr>
               ))}
             </tbody>
@@ -825,7 +826,7 @@ export default function TelaPreAnalise() {
     </div>
   );
 
-  const renderTabelaResultados = (
+  const tabelaResultados = (
     <div className="bg-white rounded-3xl shadow-xl border border-[#d7e3ff] p-6">
       <h2 className="text-lg font-extrabold uppercase tracking-wide text-slate-800">
         Dados — resultado pré-análise
@@ -835,15 +836,15 @@ export default function TelaPreAnalise() {
           <table className="min-w-full uppercase text-sm">
             <thead className="bg-[#eef2ff] text-slate-800">
               <tr>
-                <Th>DATA</Th>
-                <Th>ID PRODUTO</Th>
-                <Th>CÓDIGO NF</Th>
-                <Th>Nº SÉRIE</Th>
-                <Th>MODELO REF</Th>
-                <Th>MODELO FABRICANTE</Th>
-                <Th>PRÉ-ANALISADO POR</Th>
-                <Th>DESTINO</Th>
-                <Th>AÇÕES</Th>
+                <CabecalhoTabela>DATA</CabecalhoTabela>
+                <CabecalhoTabela>ID PRODUTO</CabecalhoTabela>
+                <CabecalhoTabela>CÓDIGO NF</CabecalhoTabela>
+                <CabecalhoTabela>Nº SÉRIE</CabecalhoTabela>
+                <CabecalhoTabela>MODELO REF</CabecalhoTabela>
+                <CabecalhoTabela>MODELO FABRICANTE</CabecalhoTabela>
+                <CabecalhoTabela>PRÉ-ANALISADO POR</CabecalhoTabela>
+                <CabecalhoTabela>DESTINO</CabecalhoTabela>
+                <CabecalhoTabela>AÇÕES</CabecalhoTabela>
               </tr>
             </thead>
             <tbody>
@@ -861,15 +862,15 @@ export default function TelaPreAnalise() {
                     index % 2 ? "bg-[#f4f7ff]" : "bg-white"
                   } hover:bg-[#eaf0ff]`}
                 >
-                  <Td mono>{registro.data}</Td>
-                  <Td mono>{registro.lpn}</Td>
-                  <Td mono>{registro.sku}</Td>
-                  <Td mono>{registro.numeroSerie}</Td>
-                  <Td>{registro.modeloRef}</Td>
-                  <Td>{registro.modeloFab || "-"}</Td>
-                  <Td>{registro.preAnalista || "-"}</Td>
-                  <Td>{registro.destino}</Td>
-                  <Td>
+                  <CelulaTabela mono>{registro.data}</CelulaTabela>
+                  <CelulaTabela mono>{registro.lpn}</CelulaTabela>
+                  <CelulaTabela mono>{registro.sku}</CelulaTabela>
+                  <CelulaTabela mono>{registro.numeroSerie}</CelulaTabela>
+                  <CelulaTabela>{registro.modeloRef}</CelulaTabela>
+                  <CelulaTabela>{registro.modeloFab || "-"}</CelulaTabela>
+                  <CelulaTabela>{registro.preAnalista || "-"}</CelulaTabela>
+                  <CelulaTabela>{registro.destino}</CelulaTabela>
+                  <CelulaTabela>
                     <button
                       type="button"
                       onClick={() => {
@@ -888,7 +889,7 @@ export default function TelaPreAnalise() {
                     >
                       REAVALIAR
                     </button>
-                  </Td>
+                  </CelulaTabela>
                 </tr>
               ))}
             </tbody>
@@ -898,7 +899,7 @@ export default function TelaPreAnalise() {
     </div>
   );
 
-  const renderFotoPreviewModal = () => {
+  const modalPreviaFoto = () => {
     if (!zoomImagem) return null;
     return (
       <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/70 p-4">
@@ -926,9 +927,9 @@ export default function TelaPreAnalise() {
   };
   return (
     <div className="py-10 px-6 sm:px-10 max-w-7xl mx-auto space-y-6 bg-gradient-to-br from-[#f5f7ff] via-white to-[#eef2ff] min-h-screen">
-      {renderTableProdutos}
-      {renderTabelaResultados}
-      {renderFotoPreviewModal()}
+      {tabelaProdutos}
+      {tabelaResultados}
+      {modalPreviaFoto()}
 
       {modalAberto && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
@@ -940,10 +941,10 @@ export default function TelaPreAnalise() {
                 </h1>
                 {produtoSelecionado && (
                   <div className="flex flex-wrap gap-2">
-                    <Chip mono label={<><b>ID:</b> {produtoSelecionado.lpn}</>} />
-                    <Chip mono label={<><b>NF:</b> {produtoSelecionado.sku}</>} />
-                    <Chip mono label={<><b>EAN:</b> {produtoSelecionado.ean}</>} />
-                    <Chip label={<><b>REF:</b> {produtoSelecionado.modeloRef}</>} />
+                    <SeloInformacao mono label={<><b>ID:</b> {produtoSelecionado.lpn}</>} />
+                    <SeloInformacao mono label={<><b>NF:</b> {produtoSelecionado.sku}</>} />
+                    <SeloInformacao mono label={<><b>EAN:</b> {produtoSelecionado.ean}</>} />
+                    <SeloInformacao label={<><b>REF:</b> {produtoSelecionado.modeloRef}</>} />
                   </div>
                 )}
               </div>
@@ -961,7 +962,7 @@ export default function TelaPreAnalise() {
             </div>
 
             <div className="px-5 pt-4">
-              <Stepper />
+              <NavegacaoEtapas />
             </div>
             <div className="px-5">
               <div className="h-1 bg-blue-100 rounded">
@@ -1000,7 +1001,7 @@ export default function TelaPreAnalise() {
                       ref={fileInputRef}
                       type="file"
                       accept="image/*"
-                      {...captureProp}
+                      {...propriedadeCaptura}
                       onChange={(event) =>
                         setFotoSerie(event.target.files?.[0] || null)
                       }
@@ -1107,9 +1108,9 @@ export default function TelaPreAnalise() {
                         <table className="min-w-full">
                           <thead className="bg-[#eaf2ff]">
                             <tr>
-                              <Th>ITEM</Th>
-                              <Th>STATUS</Th>
-                              <Th>FOTO</Th>
+                            <CabecalhoTabela>ITEM</CabecalhoTabela>
+                            <CabecalhoTabela>STATUS</CabecalhoTabela>
+                            <CabecalhoTabela>FOTO</CabecalhoTabela>
                             </tr>
                           </thead>
                           <tbody>
@@ -1118,8 +1119,8 @@ export default function TelaPreAnalise() {
                                 key={`${emb.nome}-${idx}`}
                                 className={idx % 2 ? "bg-[#f6f9ff]" : "bg-white"}
                               >
-                                <Td>{emb.nome}</Td>
-                                <Td>
+                                <CelulaTabela>{emb.nome}</CelulaTabela>
+                                <CelulaTabela>
                                   <select
                                     className="border rounded-lg px-2 py-1 bg-white ring-1 ring-slate-200"
                                     value={emb.status}
@@ -1139,15 +1140,15 @@ export default function TelaPreAnalise() {
                                       </option>
                                     ))}
                                   </select>
-                                </Td>
-                                <Td>
+                                </CelulaTabela>
+                                <CelulaTabela>
                                   {precisaFoto(emb.status) ? (
                                     <div className="flex items-center gap-2">
                                       <input
                                         id={`foto-emb-${idx}`}
                                         type="file"
                                         accept="image/*"
-                                        {...captureProp}
+                                        {...propriedadeCaptura}
                                         className="hidden"
                                         onChange={(event) => {
                                           const file = event.target.files?.[0];
@@ -1178,7 +1179,7 @@ export default function TelaPreAnalise() {
                                         </span>
                                       )}
                                       {fotosEmb[idx] && (
-                                        <FotoPreview
+                                        <PreviaFoto
                                           preview={fotosEmb[idx].preview}
                                           onClear={() =>
                                             setFotosEmb((prev) => {
@@ -1194,7 +1195,7 @@ export default function TelaPreAnalise() {
                                   ) : (
                                     <span className="text-[11px] text-gray-400">-</span>
                                   )}
-                                </Td>
+                                </CelulaTabela>
                               </tr>
                             ))}
                             {embalagens.length === 0 && (
@@ -1242,9 +1243,9 @@ export default function TelaPreAnalise() {
                       <table className="min-w-full">
                         <thead className="bg-[#eaf2ff]">
                           <tr>
-                            <Th>ACESSÓRIO</Th>
-                            <Th>STATUS</Th>
-                            <Th>FOTO</Th>
+                            <CabecalhoTabela>ACESSÓRIO</CabecalhoTabela>
+                            <CabecalhoTabela>STATUS</CabecalhoTabela>
+                            <CabecalhoTabela>FOTO</CabecalhoTabela>
                           </tr>
                         </thead>
                         <tbody className="uppercase">
@@ -1253,8 +1254,8 @@ export default function TelaPreAnalise() {
                               key={`${acc.nome}-${idx}`}
                               className={idx % 2 ? "bg-[#f6f9ff]" : "bg-white"}
                             >
-                              <Td>{acc.nome}</Td>
-                              <Td>
+                              <CelulaTabela>{acc.nome}</CelulaTabela>
+                              <CelulaTabela>
                                 <select
                                   className="border rounded-lg px-2 py-1 bg-white ring-1 ring-slate-200"
                                   value={acc.status}
@@ -1279,15 +1280,15 @@ export default function TelaPreAnalise() {
                                     </option>
                                   ))}
                                 </select>
-                              </Td>
-                              <Td>
+                              </CelulaTabela>
+                              <CelulaTabela>
                                 {precisaFoto(acc.status) ? (
                                   <div className="flex items-center gap-2">
                                     <input
                                       id={`foto-acc-${idx}`}
                                       type="file"
                                       accept="image/*"
-                                      {...captureProp}
+                                      {...propriedadeCaptura}
                                       className="hidden"
                                       onChange={(event) => {
                                         const file = event.target.files?.[0];
@@ -1318,7 +1319,7 @@ export default function TelaPreAnalise() {
                                       </span>
                                     )}
                                     {fotosAcessorios[idx] && (
-                                      <FotoPreview
+                                      <PreviaFoto
                                         preview={fotosAcessorios[idx].preview}
                                         onClear={() =>
                                           setFotosAcessorios((prev) => {
@@ -1334,7 +1335,7 @@ export default function TelaPreAnalise() {
                                 ) : (
                                   <span className="text-[11px] text-gray-400">-</span>
                                 )}
-                              </Td>
+                              </CelulaTabela>
                             </tr>
                           ))}
                           {acessorios.length === 0 && (
@@ -1436,9 +1437,9 @@ export default function TelaPreAnalise() {
                       <table className="min-w-full">
                         <thead className="bg-[#eaf2ff]">
                           <tr>
-                            <Th>PEÇA</Th>
-                            <Th>STATUS</Th>
-                            <Th>FOTO</Th>
+                            <CabecalhoTabela>PEÇA</CabecalhoTabela>
+                            <CabecalhoTabela>STATUS</CabecalhoTabela>
+                            <CabecalhoTabela>FOTO</CabecalhoTabela>
                           </tr>
                         </thead>
                         <tbody>
@@ -1447,8 +1448,8 @@ export default function TelaPreAnalise() {
                               key={`${peca.nome}-${idx}`}
                               className={idx % 2 ? "bg-[#f6f9ff]" : "bg-white"}
                             >
-                              <Td>{peca.nome}</Td>
-                              <Td>
+                              <CelulaTabela>{peca.nome}</CelulaTabela>
+                              <CelulaTabela>
                                 <select
                                   className="border rounded-lg px-2 py-1 bg-white ring-1 ring-slate-200"
                                   value={peca.status}
@@ -1468,15 +1469,15 @@ export default function TelaPreAnalise() {
                                     </option>
                                   ))}
                                 </select>
-                              </Td>
-                              <Td>
+                              </CelulaTabela>
+                              <CelulaTabela>
                                 {("RISCADO" === peca.status || "DANIFICADO" === peca.status) ? (
                                   <div className="flex items-center gap-2">
                                     <input
                                       id={`foto-pec-${idx}`}
                                       type="file"
                                       accept="image/*"
-                                      {...captureProp}
+                                      {...propriedadeCaptura}
                                       className="hidden"
                                       onChange={(event) => {
                                         const file = event.target.files?.[0];
@@ -1507,7 +1508,7 @@ export default function TelaPreAnalise() {
                                       </span>
                                     )}
                                     {fotosPecas[idx] && (
-                                      <FotoPreview
+                                      <PreviaFoto
                                         preview={fotosPecas[idx].preview}
                                         onClear={() =>
                                           setFotosPecas((prev) => {
@@ -1523,7 +1524,7 @@ export default function TelaPreAnalise() {
                                 ) : (
                                   <span className="text-[11px] text-gray-400">-</span>
                                 )}
-                              </Td>
+                              </CelulaTabela>
                             </tr>
                           ))}
                           {pecas.length === 0 && (
@@ -1590,9 +1591,9 @@ export default function TelaPreAnalise() {
                           <table className="min-w-full">
                             <thead className="bg-[#eaf2ff]">
                               <tr>
-                                <Th>FUNCIONALIDADE</Th>
-                                <Th>STATUS</Th>
-                                <Th>DEFEITO (SE NÃO OK)</Th>
+                                <CabecalhoTabela>FUNCIONALIDADE</CabecalhoTabela>
+                                <CabecalhoTabela>STATUS</CabecalhoTabela>
+                                <CabecalhoTabela>DEFEITO (SE NÃO OK)</CabecalhoTabela>
                               </tr>
                             </thead>
                             <tbody>
@@ -1603,8 +1604,8 @@ export default function TelaPreAnalise() {
                                     key={`${func.nome}-${idx}`}
                                     className={idx % 2 ? "bg-[#f6f9ff]" : "bg-white"}
                                   >
-                                    <Td>{func.nome}</Td>
-                                    <Td>
+                                    <CelulaTabela>{func.nome}</CelulaTabela>
+                                    <CelulaTabela>
                                       <select
                                         className="border rounded-lg px-2 py-1 bg-white ring-1 ring-slate-200"
                                         value={func.status}
@@ -1629,8 +1630,8 @@ export default function TelaPreAnalise() {
                                         <option value="OK">OK</option>
                                         <option value="NÃO OK">NÃO OK</option>
                                       </select>
-                                    </Td>
-                                    <Td>
+                                    </CelulaTabela>
+                                    <CelulaTabela>
                                       {func.status === "NÃO OK" ? (
                                         <select
                                           className="border rounded-lg px-2 py-1 bg-white ring-1 ring-slate-200"
@@ -1655,7 +1656,7 @@ export default function TelaPreAnalise() {
                                       ) : (
                                         <span className="text-[11px] text-gray-400">-</span>
                                       )}
-                                    </Td>
+                                    </CelulaTabela>
                                   </tr>
                                 );
                               })}

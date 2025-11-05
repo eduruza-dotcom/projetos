@@ -1,9 +1,9 @@
-# Test Execution
+# Execução de testes
 
-Attempted to bundle `src/TelaPreAnalise.jsx` with esbuild to ensure the React component compiles without syntax errors. The command failed because the npm registry denied access (HTTP 403), preventing esbuild from being downloaded in the current environment.
+Foi tentado empacotar `src/TelaPreAnalise.jsx` com o esbuild para garantir que o componente React compile sem erros de sintaxe. O comando falhou porque o registro do npm negou acesso (HTTP 403), impedindo o download do esbuild neste ambiente.
 
 ```
 npx --yes esbuild src/TelaPreAnalise.jsx --bundle --platform=browser --format=esm --log-level=error --outfile=/tmp/tela.js
 ```
 
-Result: **Failed** — npm registry returned 403 Forbidden.
+Resultado: **Falhou** — o registro do npm retornou 403 Forbidden.
