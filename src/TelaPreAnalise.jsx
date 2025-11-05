@@ -226,13 +226,17 @@ const precisaFoto = (status) =>
   ["RISCADO", "DANIFICADO", "AMASSADO"].includes(status);
 
 const Th = ({ children }) => (
-  <th className="px-3 py-2 font-semibold tracking-wide text-left border-b border-blue-200 sticky top-0 z-10 bg-[#d3e3ff]">
+  <th className="px-3 py-2 font-semibold tracking-wide text-left border-b border-blue-200 sticky top-0 z-10 bg-[#d3e3ff] text-slate-800">
     {children}
   </th>
 );
 
 const Td = ({ children, mono = false }) => (
-  <td className={`px-3 py-2 border-b border-blue-50 ${mono ? "font-mono" : ""}`}>
+  <td
+    className={`px-3 py-2 border-b border-blue-50 ${
+      mono ? "font-mono text-slate-800" : "text-slate-700"
+    }`}
+  >
     {children}
   </td>
 );
@@ -241,7 +245,7 @@ const Chip = ({ label, mono = false }) => (
   <span
     className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] ${
       mono ? "font-mono" : ""
-    } bg-blue-50 text-blue-700 border border-blue-200`}
+    } bg-[#e7eeff] text-blue-700 border border-[#c8d8ff]`}
   >
     {label}
   </span>
@@ -754,17 +758,17 @@ export default function TelaPreAnalise() {
     </div>
   );
   const renderTableProdutos = (
-    <div className="bg-white/80 backdrop-blur rounded-2xl shadow-xl ring-1 ring-slate-200 p-5">
+    <div className="bg-white rounded-3xl shadow-xl border border-[#d7e3ff] p-6">
       <h2 className="text-lg font-extrabold uppercase tracking-wide text-slate-800">
         Produtos aguardando pré-análise
-        <span className="text-slate-400 text-xs">
+        <span className="text-slate-400 text-xs block font-medium normal-case">
           (somente o mais antigo habilitado)
         </span>
       </h2>
-      <div className="mt-3 overflow-hidden rounded-2xl ring-1 ring-blue-200">
-        <div className="max-h-[50vh] overflow-auto">
+      <div className="mt-4 overflow-hidden rounded-3xl border border-[#d7e3ff] shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+        <div className="max-h-[55vh] overflow-auto">
           <table className="min-w-full uppercase text-sm">
-            <thead className="bg-[#d3e3ff]">
+            <thead className="bg-[#d3e3ff] text-slate-800">
               <tr>
                 <Th>DATA RECEBIMENTO</Th>
                 <Th>RECEBIDO POR</Th>
@@ -779,7 +783,7 @@ export default function TelaPreAnalise() {
             <tbody>
               {itens.length === 0 && (
                 <tr>
-                  <td className="px-3 py-4 text-center text-gray-500" colSpan={8}>
+                  <td className="px-3 py-4 text-center text-slate-500" colSpan={8}>
                     NENHUM REGISTRO PARA EXIBIR
                   </td>
                 </tr>
@@ -787,9 +791,9 @@ export default function TelaPreAnalise() {
               {itens.map((row, idx) => (
                 <tr
                   key={row.id}
-                  className={`transition hover:bg-blue-50/60 ${
-                    idx % 2 ? "bg-[#f6f9ff]" : "bg-white"
-                  }`}
+                  className={`transition ${
+                    idx % 2 ? "bg-[#f4f7ff]" : "bg-white"
+                  } hover:bg-[#e6efff]`}
                 >
                   <Td mono>{row.dataReceb}</Td>
                   <Td>{row.recebidoPor}</Td>
@@ -803,9 +807,9 @@ export default function TelaPreAnalise() {
                       type="button"
                       disabled={!row.habilitado}
                       onClick={() => iniciarPreAnalise(row)}
-                      className={`px-3 py-1 rounded-md text-white font-semibold transition disabled:cursor-not-allowed disabled:bg-gray-400 ${
+                      className={`px-4 py-1.5 rounded-lg text-white font-semibold tracking-wide transition disabled:cursor-not-allowed disabled:bg-gray-400 ${
                         row.habilitado
-                          ? "bg-blue-600 hover:bg-blue-700 shadow"
+                          ? "bg-[#2f72ff] hover:bg-[#1f5ae5] shadow"
                           : "bg-gray-400"
                       }`}
                     >
@@ -822,14 +826,14 @@ export default function TelaPreAnalise() {
   );
 
   const renderTabelaResultados = (
-    <div className="bg-white/80 backdrop-blur rounded-2xl shadow-xl ring-1 ring-slate-200 p-5">
+    <div className="bg-white rounded-3xl shadow-xl border border-[#d7e3ff] p-6">
       <h2 className="text-lg font-extrabold uppercase tracking-wide text-slate-800">
         Dados — resultado pré-análise
       </h2>
-      <div className="mt-3 overflow-hidden rounded-2xl ring-1 ring-slate-200">
-        <div className="max-h-[50vh] overflow-auto">
+      <div className="mt-4 overflow-hidden rounded-3xl border border-[#d7e3ff] shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+        <div className="max-h-[55vh] overflow-auto">
           <table className="min-w-full uppercase text-sm">
-            <thead className="bg-gray-100">
+            <thead className="bg-[#eef2ff] text-slate-800">
               <tr>
                 <Th>DATA</Th>
                 <Th>ID PRODUTO</Th>
@@ -845,7 +849,7 @@ export default function TelaPreAnalise() {
             <tbody>
               {avaliados.length === 0 && (
                 <tr>
-                  <td className="px-3 py-4 text-center text-gray-500" colSpan={9}>
+                  <td className="px-3 py-4 text-center text-slate-500" colSpan={9}>
                     NENHUM PRODUTO AVALIADO
                   </td>
                 </tr>
@@ -853,9 +857,9 @@ export default function TelaPreAnalise() {
               {avaliados.map((registro, index) => (
                 <tr
                   key={`${registro.lpn}-${index}`}
-                  className={`transition hover:bg-slate-50 ${
-                    index % 2 ? "bg-gray-50" : "bg-white"
-                  }`}
+                  className={`transition ${
+                    index % 2 ? "bg-[#f4f7ff]" : "bg-white"
+                  } hover:bg-[#eaf0ff]`}
                 >
                   <Td mono>{registro.data}</Td>
                   <Td mono>{registro.lpn}</Td>
@@ -880,7 +884,7 @@ export default function TelaPreAnalise() {
                         }
                         setAvaliados((prev) => prev.filter((_, ix) => ix !== index));
                       }}
-                      className="px-3 py-1 rounded-md border font-semibold hover:bg-gray-100"
+                      className="px-4 py-1.5 rounded-lg border border-[#c7d5ff] font-semibold text-slate-700 hover:bg-[#eef2ff]"
                     >
                       REAVALIAR
                     </button>
@@ -921,7 +925,7 @@ export default function TelaPreAnalise() {
     );
   };
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-6 bg-gradient-to-br from-slate-50 via-white to-slate-100 min-h-screen">
+    <div className="py-10 px-6 sm:px-10 max-w-7xl mx-auto space-y-6 bg-gradient-to-br from-[#f5f7ff] via-white to-[#eef2ff] min-h-screen">
       {renderTableProdutos}
       {renderTabelaResultados}
       {renderFotoPreviewModal()}
